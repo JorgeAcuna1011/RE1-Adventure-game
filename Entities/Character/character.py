@@ -10,8 +10,15 @@ class Character:
         self.current_health = max_health
         self.health_state = "Fine"
         self.weapon = weapon
-        self.inventory = inventory
+        from Entities.Character.Inventory import Inventory
+        # Ensure inventory is an Inventory object, if it's a list, convert it
+        if isinstance(inventory, list):
+             self.inventory = Inventory(inventory)
+        else:
+             self.inventory = inventory if inventory else Inventory()
+             
         self.special_item = special_item
+        self.current_location = None
         
     def equip_weapon(self, weapon):
         self.weapon = weapon
@@ -23,37 +30,28 @@ class Character:
     def take_damage(self, damage):
         self.current_health = max(0, self.current_health - damage)
 
-        match self.current_health:
-            #Checking health and updating health state
-            case hp if hp <= 0:
-                self.health_state = "Dead"
-                print("YOU HAVE DIED")
-
-            #Taking damage from enemy
-            case _:
-                print(f"{self.name} has taken {damage}")
+        if self.current_health <= 0:
+            self.health_state = "Dead"
+            print("YOU HAVE DIED")
+        else:
+            print(f"{self.name} has taken {damage}")
     
     def attack(self):
-        match self.weapon:
-            #Checking to see if the Character has a gun equipped
-            case weapon if weapon != None:
-               print(f"{self.name} fires {self.weapon}")
-            
-            #Base case
-            case _:
-                print(f"{self.name} does not have a weapon equipped!")
+        if self.weapon is not None:
+             print(f"{self.name} fires {self.weapon}")
+        else:
+             print(f"{self.name} does not have a weapon equipped!")
     
     def heal(self, amount):
         self.current_health = min(100, self.current_health + amount)
 
-        match self.current_health:
-            case hp if hp >= 60 and hp <= 100:
-                self.health_state = "Fine"
-            case hp if hp >= 30 and hp <= 59:
-                self.health_state = "Caution"
-            case hp if hp >= 15 and hp <= 29:
-                self.health_state = "Extreme Caution"
-            case hp if hp >= 1 and hp <= 14:
-                self.health_state = "Danger"
+        if self.current_health >= 60 and self.current_health <= 100:
+            self.health_state = "Fine"
+        elif self.current_health >= 30 and self.current_health <= 59:
+            self.health_state = "Caution"
+        elif self.current_health >= 15 and self.current_health <= 29:
+            self.health_state = "Extreme Caution"
+        elif self.current_health >= 1 and self.current_health <= 14:
+            self.health_state = "Danger"
             
         print(f"{self.name}: {self.health_state}")

@@ -7,4 +7,4 @@ class Jill_Valentine(Character):
         starting_weapon = Jills_Samurai_Edge()
 
         # Call the parent constructor with the correct values
-        super().__init__("Jill Valentine", 100, "Fine", starting_weapon, None, None)
+        super().__init__("Jill Valentine", 100, "Fine", starting_weapon, [starting_weapon], None)

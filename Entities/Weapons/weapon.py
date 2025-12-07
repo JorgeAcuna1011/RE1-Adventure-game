@@ -1,8 +1,8 @@
 class Weapon:
-    def __init__(self, name, Ammo_type, Capacity):
+    def __init__(self, name, damage, ammo_type):
         self.name = name
-        self.Ammo_type = Ammo_type
-        self.Rounds = Capacity
+        self.damage = damage
+        self.ammo_type = ammo_type
     
     def __str__(self):
         return self.name  # This ensures the weapon prints correctly
